@@ -1,87 +1,324 @@
-MediLink: Healthcare Assistant
-A full-stack, AI-inspired healthcare platform built with Python (Flask), MySQL,Tailwind CSS and the Inter font. Features patient/doctor/admin roles, symptomanalysis, risk scoring, specialist recommendations, appointment management, a healthcarechatbot, notifications, audit logs, and a polished light/dark UI.
+# 🏥 MediLink — AI Healthcare Assistant
 
-✨ Features
-Authentication — register, login, logout, password reset, bcrypt hashing, session management, role-based redirects
-Patients — dashboard, symptom analysis with AI engine, risk level + specialist recommendation, appointment booking & history, prediction history, MediBot chatbot, notifications, feedback, profile, settings
-Doctors — dashboard, appointment management, patient detail view, consultation notes
-Admins — dashboard, user & doctor management, reports, audit logs, feedback review
-Medical Engine — rule-based symptom matching with NLP-light preprocessing, designed for easy ML integration
-Design — Inter font, green light/dark theme, responsive mobile-first layout, 2D SVG hero illustration
-🛠 Tech Stack
-Layer	Technology
-Backend	Python 3.10+, Flask 3, PyMySQL, bcrypt
-Database	MySQL 8.0+
-Frontend	HTML5, Tailwind CSS (CDN), vanilla JS, Jinja2
-Font	Inter (Google Fonts)
-🚀 Setup
-1. Clone & create a virtual environment
-git clone <your-repo-url> medilinkcd medilinkpython -m venv venvsource venv/bin/activate   # Windows: venv\Scripts\activate
-2. Install dependencies
-bash
+A full-stack, AI-inspired healthcare platform designed to connect patients, doctors, and administrators through a modern digital healthcare experience.
 
+MediLink helps users analyze symptoms, assess health risks, receive specialist recommendations, manage appointments, and communicate with an intelligent healthcare chatbot.
+
+Built with **Python (Flask), MySQL, Tailwind CSS, JavaScript, and Inter Font**, MediLink provides a responsive light/dark interface with role-based healthcare management features.
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication & Security
+
+* User registration and login system
+* Logout and password reset functionality
+* Secure password hashing using **bcrypt**
+* Session-based authentication
+* Role-based access control
+* Protected routes with authorization guards
+
+---
+
+## 👤 Patient Features
+
+* Patient dashboard
+* Symptom analysis using healthcare prediction engine
+* Risk level assessment
+* Specialist recommendations
+* Appointment booking and history
+* Prediction history tracking
+* AI healthcare chatbot (**MediBot**)
+* Notifications
+* Feedback submission
+* Profile management
+* Account settings
+
+---
+
+## 👨‍⚕️ Doctor Features
+
+* Doctor dashboard
+* Appointment management
+* Patient detail viewing
+* Consultation notes
+* Patient interaction history
+
+---
+
+## 🛡️ Admin Features
+
+* Admin dashboard
+* User management
+* Doctor management
+* System reports
+* Audit log monitoring
+* Feedback management
+
+---
+
+# 🧠 Medical AI Engine
+
+MediLink includes a lightweight healthcare intelligence engine designed for future machine learning integration.
+
+### Current Implementation:
+
+* Rule-based symptom matching system
+* NLP-light text preprocessing
+* Symptom alias recognition
+* Disease prediction with confidence scores
+* Risk-level classification
+* Specialist recommendation system
+* Healthcare chatbot intent matching
+
+### Future ML Integration:
+
+The architecture is designed so the current prediction engine can be replaced with advanced models such as:
+
+* Scikit-learn classifiers
+* NLP models
+* Transformer-based healthcare models
+* Hugging Face models
+
+without changing the application routes or services.
+
+---
+
+# 🛠️ Tech Stack
+
+| Layer           | Technology                              |
+| --------------- | --------------------------------------- |
+| Backend         | Python 3.10+, Flask 3                   |
+| Database        | MySQL 8.0+                              |
+| Database Driver | PyMySQL                                 |
+| Security        | bcrypt                                  |
+| Frontend        | HTML5, Tailwind CSS, Vanilla JavaScript |
+| Template Engine | Jinja2                                  |
+| Font            | Inter (Google Fonts)                    |
+| Architecture    | Full-stack MVC-inspired Flask structure |
+
+---
+
+# 🚀 Installation & Setup
+
+## 1. Clone Repository
+
+```bash
+git clone <your-repository-url>
+
+cd medilink
+```
+
+---
+
+## 2. Create Virtual Environment
+
+### Linux / macOS
+
+```bash
+python -m venv venv
+
+source venv/bin/activate
+```
+
+### Windows
+
+```bash
+python -m venv venv
+
+venv\Scripts\activate
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
-3. Configure environment
-bash
+```
 
+---
+
+## 4. Configure Environment Variables
+
+Create a `.env` file:
+
+```bash
 cp .env.example .env
-# Edit .env with your MySQL credentials
-4. Initialize the database
-bash
+```
 
+Update the file with your MySQL credentials:
+
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=your_password
+DB_NAME=medilink
+DB_PORT=3306
+
+SECRET_KEY=your_secret_key
+```
+
+---
+
+## 5. Initialize Database
+
+Run:
+
+```bash
 python database/init_db.py
-This creates the medilink database, all tables, seeds the symptom catalog,
-and inserts a default admin user.
+```
 
-Note: The default admin password hash in schema.sql is illustrative.
-To generate a fresh hash for Admin@123, run:
+This will:
 
-python
+* Create the MediLink database
+* Create required tables
+* Insert symptom catalog data
+* Create default admin account
 
-import bcrypt
-print(bcrypt.hashpw(b"Admin@123", bcrypt.gensalt(12)).decode())
-…and replace the row in schema.sql before running init_db.py.
+---
 
-5. Run the application
-bash
+## 6. Run Application
 
+Start Flask server:
+
+```bash
 python app.py
-# → http://localhost:5000
-🔑 Sample credentials
-Role
-Email
-Password
-Patient	(register your own)	—
-Doctor	(register your own)	—
+```
 
-📂 Project structure
-See the file tree in the project root. Key folders:
+Application will run at:
 
-backend/ — services, routes, ML engine, DB helpers, auth
-database/ — schema + init script
-templates/ — Jinja2 templates (auth, patient, doctor, admin, errors)
-static/ — CSS, JS, SVG hero illustration
-🔒 Security
-Passwords hashed with bcrypt (cost 12)
-Parameterized SQL queries (PyMySQL) — SQL-injection safe
-Session-based auth with httponly, samesite cookies
-Role-based route guards (@role_required)
-Server-side input validation
-Audit logging on key actions
-🧠 AI / ML architecture
-backend/ml/symptom_engine.py contains:
+```
+http://localhost:5000
+```
 
-A disease knowledge base mapping symptoms → diseases with weights, risk levels, specialists, advice
-An NLP-light preprocessor (lowercasing, tokenization, alias resolution, stopword removal)
-A predict() function returning ranked candidates with confidence scores
-A chatbot_reply() intent matcher with fallback to the prediction engine
-The contract is intentionally simple (text in → dict out) so a future
-scikit-learn / HuggingFace model can replace the rule-based predict() without
-touching routes or services.
+---
 
-📜 Disclaimer
-MediLink is a demo/educational product and not a certified medical device.
-Always consult a licensed healthcare professional.
+# 🔑 Demo Credentials
 
-📄 License
-MIT — free to use and adapt.
+| Role    | Email                           | Password |
+| ------- | ------------------------------- | -------- |
+| Patient | Register your own account       | -        |
+| Doctor  | Register your own account       | -        |
+| Admin   | Configure during database setup | -        |
+
+---
+
+# 📂 Project Structure
+
+```
+MediLink/
+│
+├── backend/
+│   ├── routes/
+│   ├── services/
+│   ├── ml/
+│   │   └── symptom_engine.py
+│   ├── auth/
+│   └── database/
+│
+├── database/
+│   ├── schema.sql
+│   └── init_db.py
+│
+├── templates/
+│   ├── auth/
+│   ├── patient/
+│   ├── doctor/
+│   ├── admin/
+│   └── errors/
+│
+├── static/
+│   ├── css/
+│   ├── js/
+│   └── images/
+│
+├── app.py
+├── requirements.txt
+├── .env.example
+└── README.md
+```
+
+---
+
+# 🔒 Security Features
+
+MediLink follows secure development practices:
+
+✅ bcrypt password hashing (cost factor 12)
+✅ Parameterized SQL queries to prevent SQL injection
+✅ Secure session management
+✅ HTTPOnly and SameSite cookies
+✅ Role-based route protection
+✅ Server-side validation
+✅ Audit logging for important actions
+
+---
+
+# 🤖 AI Architecture
+
+The core AI logic is located at:
+
+```
+backend/ml/symptom_engine.py
+```
+
+It contains:
+
+* Disease knowledge base
+* Symptom-weight mapping
+* Risk assessment system
+* Specialist recommendation logic
+* NLP preprocessing pipeline
+* Prediction function
+* Chatbot response engine
+
+Input:
+
+```
+User symptoms → Processing → Prediction
+```
+
+Output:
+
+```json
+{
+  "disease": "Example Disease",
+  "confidence": 0.85,
+  "risk": "Medium",
+  "specialist": "Example Specialist"
+}
+```
+
+---
+
+# 🎨 UI & Design
+
+MediLink follows a modern healthcare design system:
+
+* Clean medical interface
+* Inter typography
+* Green & white healthcare theme
+* Dark mode support
+* Responsive mobile-first layout
+* SVG-based hero illustration
+* Accessible user experience
+
+---
+
+# ⚠️ Disclaimer
+
+MediLink is an educational/demo healthcare application.
+
+It is **not a certified medical device** and should not replace professional medical advice, diagnosis, or treatment.
+
+Always consult a qualified healthcare professional for medical decisions.
+
+---
+
+# 📜 License
+
+Distributed under the MIT License.
+
+You are free to use, modify, and adapt this project.

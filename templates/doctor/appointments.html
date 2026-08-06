@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% block title %}Appointments — Doctor{% endblock %}
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8 space-y-8 relative overflow-hidden bg-ink-950 min-h-screen">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <!-- Header -->
+  <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 shadow-sm grid place-items-center">
+        <svg class="w-6 h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+      </div>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Manage Appointments</h1>
+        <p class="text-sm text-slate-400 mt-0.5">Review patient schedules and update consultation statuses.</p>
+      </div>
+    </div>
+    <span class="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-brand-300 text-xs font-bold uppercase tracking-widest border border-white/10 shadow-sm w-fit">
+      <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Live Schedule
+    </span>
+  </div>
+
+  <!-- Appointments List -->
+  <div class="relative space-y-5">
+    {% if appointments %}
+      {% for a in appointments %}
+      <div class="group relative p-6 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-xl shadow-black/20 hover:shadow-2xl transition-all duration-500 overflow-hidden">
+        
+        <!-- Card Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div class="flex items-center gap-4">
+            <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px]">
+              <div class="w-full h-full rounded-full bg-ink-950 grid place-items-center text-brand-300 font-bold uppercase text-base">
+                {{ a.patient_name[0] }}
+              </div>
+            </div>
+            <div>
+              <p class="font-bold text-white text-lg">{{ a.patient_name }}</p>
+              <p class="text-xs text-slate-400 font-mono mt-0.5">{{ a.scheduled_at.strftime('%b %d, %Y · %H:%M') }} · {{ a.gender or 'N/A' }} · {{ a.blood_group or 'N/A' }}</p>
+            </div>
+          </div>
+          <span class="text-xs font-bold px-3 py-1.5 rounded-full capitalize border 
+            {% if a.status=='confirmed' %}bg-brand-500/10 text-brand-300 border-brand-500/20
+            {% elif a.status=='pending' %}bg-amber-500/10 text-amber-300 border-amber-500/20
+            {% elif a.status=='completed' %}bg-sky-500/10 text-sky-300 border-sky-500/20
+            {% else %}bg-red-500/10 text-red-300 border-red-500/20{% endif %}">
+            {{ a.status|capitalize }}
+          </span>
+        </div>
+
+        <!-- Reason -->
+        {% if a.reason %}
+        <div class="mt-5 p-4 rounded-2xl bg-white/5 border border-white/10">
+          <p class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5">Reason for visit</p>
+          <p class="text-sm text-slate-200">{{ a.reason }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Action Buttons -->
+        {% if a.status in ('pending','confirmed') %}
+        <div class="mt-6 pt-5 border-t border-white/5 flex flex-wrap gap-2 items-center">
+          <span class="text-xs font-bold text-slate-500 mr-2 uppercase tracking-wider">Actions:</span>
+          
+          {% if a.status == 'pending' %}
+          <form method="post" action="{{ url_for('doctor.change_status', aid=a.appointment_id) }}">
+            <input type="hidden" name="status" value="confirmed">
+            <button type="submit" class="px-4 py-2 text-xs font-bold rounded-full bg-brand-500 text-white hover:bg-brand-400 transition-transform hover:scale-105 shadow-sm flex items-center gap-1.5">
+              <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg> Confirm
+            </button>
+          </form>
+          {% endif %}
+          
+          <form method="post" action="{{ url_for('doctor.change_status', aid=a.appointment_id) }}">
+            <input type="hidden" name="status" value="completed">
+            <button type="submit" class="px-4 py-2 text-xs font-bold rounded-full bg-white text-ink-950 hover:scale-105 transition-transform shadow-sm">Mark complete</button>
+          </form>
+          
+          <form method="post" action="{{ url_for('doctor.change_status', aid=a.appointment_id) }}">
+            <input type="hidden" name="status" value="cancelled">
+            <button type="submit" class="px-4 py-2 text-xs font-bold rounded-full bg-red-500/10 text-red-400 border border-red-500/20 hover:scale-105 transition-transform shadow-sm">Cancel</button>
+          </form>
+          
+          <a href="{{ url_for('doctor.patient_detail', pid=a.patient_id) }}" class="ml-auto px-4 py-2 text-xs font-bold rounded-full bg-white/5 text-slate-200 border border-white/10 hover:scale-105 transition-transform shadow-sm">View patient</a>
+        </div>
+        {% endif %}
+
+        <!-- Consultation Notes -->
+        {% if a.status != 'completed' %}
+        <details class="mt-4 group">
+          <summary class="text-xs text-brand-400 cursor-pointer font-bold flex items-center gap-1.5 hover:underline list-none">
+            <svg class="w-4 h-4 transition-transform group-open:rotate-45" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+            Add consultation notes
+          </summary>
+          <form method="post" action="{{ url_for('doctor.add_notes', aid=a.appointment_id) }}" class="mt-4 p-5 grid sm:grid-cols-2 gap-4 text-sm bg-white/5 border border-white/10 rounded-2xl">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Diagnosis</label>
+              <input name="diagnosis" placeholder="e.g. Common cold" class="w-full px-4 py-2.5 rounded-xl bg-ink-950 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all placeholder-slate-500 text-white" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Prescription</label>
+              <input name="prescription" placeholder="e.g. Rest, fluids" class="w-full px-4 py-2.5 rounded-xl bg-ink-950 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all placeholder-slate-500 text-white" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Notes</label>
+              <textarea name="notes" rows="3" placeholder="Detailed clinical notes..." class="w-full px-4 py-2.5 rounded-xl bg-ink-950 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all resize-none placeholder-slate-500 text-white"></textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wider">Follow-up Date</label>
+              <input type="date" name="follow_up_date" class="w-full px-4 py-2.5 rounded-xl bg-ink-950 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white [color-scheme:dark]" />
+            </div>
+            <div class="flex items-end">
+              <button class="w-full px-4 py-2.5 rounded-xl bg-brand-500 text-white font-bold text-xs hover:bg-brand-400 transition-transform hover:scale-[1.01] shadow-sm flex items-center justify-center gap-1.5">Save &amp; complete</button>
+            </div>
+          </form>
+        </details>
+        {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+      <!-- Empty State -->
+      <div class="relative p-16 text-center rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-xl flex flex-col items-center gap-4 text-slate-400">
+        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 grid place-items-center">
+          <svg class="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+        </div>
+        <p class="font-medium">No appointments scheduled yet.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

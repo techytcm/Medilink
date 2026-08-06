@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Feedback — MediLink{% endblock %}
+
+{% block content %}
+<div class="relative overflow-hidden bg-ink-950 min-h-screen">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <!-- Dotted grid pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <div class="relative p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto space-y-8">
+    
+    <!-- Header -->
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 shadow-sm grid place-items-center">
+        <svg class="w-6 h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+      </div>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Feedback</h1>
+        <p class="text-sm text-slate-400 mt-0.5">We'd love to hear your thoughts on MediLink.</p>
+      </div>
+    </div>
+
+    <!-- Submission Form -->
+    <div class="p-8 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-2xl shadow-black/20">
+      <form method="post" class="space-y-6">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Rating</label>
+          <select name="rating" required class="w-full sm:w-48 px-4 py-3 rounded-xl bg-ink-950 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white font-medium cursor-pointer">
+            <option value="" class="text-slate-500">Select rating…</option>
+            {% for r in range(1,6) %}<option value="{{ r }}">{{ r }} ★{% endfor %}
+          </select>
+        </div>
+        
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Subject</label>
+          <input name="subject" placeholder="Briefly summarize your feedback" class="w-full px-4 py-3 rounded-xl bg-ink-950 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 font-medium" />
+        </div>
+        
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Message</label>
+          <textarea name="message" rows="5" required placeholder="Tell us about your experience..." class="w-full px-4 py-3 rounded-xl bg-ink-950 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 resize-none"></textarea>
+        </div>
+        
+        <button type="submit" class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold shadow-lg shadow-white/10 transition-all hover:scale-[1.01] flex items-center justify-center gap-2">
+          Send feedback
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Previous Feedback List -->
+    <div>
+      <h2 class="font-bold text-lg text-white tracking-tight mb-4 px-1">Your past feedback</h2>
+      {% if feedback %}
+      <div class="space-y-4">
+        {% for f in feedback %}
+        <div class="p-6 rounded-2xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-lg shadow-black/20 flex flex-col gap-3">
+          <div class="flex items-center justify-between border-b border-white/5 pb-3">
+            <div class="flex items-center gap-1.5 text-amber-300 font-bold text-sm bg-amber-500/10 px-3 py-1 rounded-full border border-amber-500/20">
+              {{ f.rating }} / 5 <span class="text-amber-400">★</span>
+            </div>
+            <div class="text-xs text-slate-500 font-mono">{{ f.created_at }}</div>
+          </div>
+          {% if f.subject %}<div class="font-bold text-white text-base">{{ f.subject }}</div>{% endif %}
+          <div class="text-sm text-slate-300 leading-relaxed">{{ f.message }}</div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="py-16 text-center rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-xl flex flex-col items-center gap-4 text-slate-400">
+        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 grid place-items-center">
+          <svg class="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m8.839 2.51l-8.839-2.51m8.839 2.51l1.183.658a2.25 2.25 0 001.023.236h.043a2.25 2.25 0 001.023-.236l1.183-.658m-8.839-2.51l-1.183-.658a2.25 2.25 0 00-1.023-.236h-.043a2.25 2.25 0 00-1.023.236l-1.183.658" /></svg>
+        </div>
+        <p class="font-medium">No feedback submitted yet.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

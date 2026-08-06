@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Create account — MediLink{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center p-4 sm:p-6 relative overflow-hidden bg-ink-950">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <!-- Dotted grid pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <div class="relative w-full max-w-2xl">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 text-brand-300 text-[11px] font-bold uppercase tracking-widest border border-white/10 backdrop-blur-sm shadow-lg">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Secure Registration
+      </span>
+      <h1 class="mt-3 text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Create your account</h1>
+      <p class="mt-1 text-sm text-slate-400">Join MediLink as a patient or a doctor.</p>
+    </div>
+
+    <!-- Form Card -->
+    <form method="post" class="space-y-4 bg-ink-900/50 backdrop-blur-xl p-6 sm:p-8 rounded-3xl shadow-2xl shadow-black/20 border border-white/5">
+      
+      <!-- Name & Phone -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Full name</label>
+          <input name="full_name" required value="{{ form.full_name if form else '' }}"
+                 class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" placeholder="John Doe" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Phone</label>
+          <input name="phone" value="{{ form.phone if form else '' }}"
+                 class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" placeholder="+1 234 567 890" />
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email address</label>
+        <input name="email" type="email" required value="{{ form.email if form else '' }}"
+               class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" placeholder="you@example.com" />
+      </div>
+
+      <!-- Role Selection -->
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">I am a...</label>
+        <div class="grid grid-cols-2 gap-4">
+          <label class="cursor-pointer group">
+            <input type="radio" name="role" value="patient" class="peer hidden" checked onchange="toggleDoctorFields(false)">
+            <div class="p-3 rounded-xl border-2 border-white/10 peer-checked:border-brand-500 peer-checked:bg-brand-500/10 group-hover:border-brand-500/30 transition-all text-center flex flex-col items-center">
+              <div class="w-9 h-9 rounded-lg bg-white/5 peer-checked:bg-brand-500/20 grid place-items-center text-xl mb-1 transition-colors">🧑</div>
+              <p class="font-semibold text-white text-sm">Patient</p>
+              <p class="text-[11px] text-slate-400">Get health insights</p>
+            </div>
+          </label>
+          <label class="cursor-pointer group">
+            <input type="radio" name="role" value="doctor" class="peer hidden" onchange="toggleDoctorFields(true)">
+            <div class="p-3 rounded-xl border-2 border-white/10 peer-checked:border-brand-500 peer-checked:bg-brand-500/10 group-hover:border-brand-500/30 transition-all text-center flex flex-col items-center">
+              <div class="w-9 h-9 rounded-lg bg-white/5 peer-checked:bg-brand-500/20 grid place-items-center text-xl mb-1 transition-colors">🩺</div>
+              <p class="font-semibold text-white text-sm">Doctor</p>
+              <p class="text-[11px] text-slate-400">Provide consultations</p>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Doctor Fields -->
+      <div id="doctor-fields" class="hidden grid-cols-1 sm:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Specialization</label>
+          <input name="specialization" placeholder="e.g. Cardiology"
+                 class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">License #</label>
+          <input name="license_number" placeholder="MD123456"
+                 class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Experience (yrs)</label>
+          <input name="experience" type="number" min="0" placeholder="5"
+                 class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" />
+        </div>
+      </div>
+
+      <!-- Passwords -->
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Password</label>
+          <input name="password" type="password" id="password" required
+                 class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" placeholder="••••••••" />
+          <p class="mt-1 text-[11px] text-slate-500">Min 8 chars, 1 letter &amp; 1 number.</p>
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Confirm password</label>
+          <input name="confirm_password" type="password" id="confirm" required
+                 class="w-full px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" placeholder="••••••••" />
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="w-full py-3 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold shadow-lg shadow-white/10 transition-all hover:scale-[1.01] flex items-center justify-center gap-2 mt-2">
+        Create account
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+      </button>
+      
+      <p class="text-center text-sm text-slate-400 pt-1">
+        Already have an account?
+        <a href="{{ url_for('auth.login') }}" class="text-brand-400 font-semibold hover:underline">Sign in</a>
+      </p>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function toggleDoctorFields(show){
+  const fields = document.getElementById('doctor-fields');
+  fields.classList.toggle('hidden', !show);
+  fields.classList.toggle('grid', show);
+  
+  // Optional: Disable inputs when hidden so they don't submit if left filled
+  fields.querySelectorAll('input').forEach(input => {
+    input.required = show;
+  });
+}
+
+const pw = document.getElementById('password');
+const cf = document.getElementById('confirm');
+cf.addEventListener('input', () => {
+  if (cf.value && cf.value !== pw.value) cf.setCustomValidity('Passwords do not match');
+  else cf.setCustomValidity('');
+});
+</script>
+{% endblock %}

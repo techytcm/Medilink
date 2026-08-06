@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Reset password — MediLink{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center p-4 sm:p-8 relative overflow-hidden bg-ink-950">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <!-- Dotted grid pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <div class="relative w-full max-w-md my-10">
+    <!-- Status Badge -->
+    <div class="text-center mb-8">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-brand-300 text-xs font-bold uppercase tracking-widest border border-white/10 backdrop-blur-sm shadow-lg">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Secure Recovery
+      </span>
+    </div>
+
+    <!-- Form Card -->
+    <div class="bg-ink-900/50 backdrop-blur-xl p-8 sm:p-10 rounded-3xl shadow-2xl shadow-black/20 border border-white/5">
+      {% if stage == 'request' %}
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Reset your password</h1>
+        <p class="mt-2 text-slate-400">Enter your email and we'll send a reset link.</p>
+        
+        <form method="post" class="mt-8 space-y-6">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Email address</label>
+            <input name="email" type="email" required placeholder="you@example.com"
+                   class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" />
+          </div>
+          <button type="submit" class="w-full py-3.5 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold shadow-lg shadow-white/10 transition-all hover:scale-[1.01] flex items-center justify-center gap-2">
+            Send reset link
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+          </button>
+        </form>
+      {% else %}
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Set a new password</h1>
+        <p class="mt-2 text-slate-400">Choose a strong password to secure your account.</p>
+        
+        <form method="post" class="mt-8 space-y-6">
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">New password</label>
+            <input name="password" type="password" required placeholder="••••••••"
+                   class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" />
+          </div>
+          <div>
+            <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Confirm new password</label>
+            <input name="confirm_password" type="password" required placeholder="••••••••"
+                   class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 text-sm" />
+          </div>
+          <button type="submit" class="w-full py-3.5 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold shadow-lg shadow-white/10 transition-all hover:scale-[1.01] flex items-center justify-center gap-2">
+            Update password
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+          </button>
+        </form>
+      {% endif %}
+      
+      <p class="mt-8 text-center text-sm text-slate-400">
+        <a href="{{ url_for('auth.login') }}" class="inline-flex items-center gap-1.5 text-brand-400 font-semibold hover:underline">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15m0 0l6.75 6.75M4.5 12l6.75-6.75" /></svg>
+          Back to sign in
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

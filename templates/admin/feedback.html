@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Feedback Review — MediLink Admin{% endblock %}
+
+{% block content %}
+<div class="p-4 sm:p-6 lg:p-8 space-y-8 relative overflow-hidden bg-ink-950 min-h-screen">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <!-- Header -->
+  <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 shadow-sm grid place-items-center">
+        <svg class="w-6 h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+      </div>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">User Feedback</h1>
+        <p class="text-sm text-slate-400 mt-0.5">Review and manage user submissions.</p>
+      </div>
+    </div>
+    <span class="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-brand-300 text-xs font-bold uppercase tracking-widest border border-white/10 shadow-sm w-fit">
+      <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Listening
+    </span>
+  </div>
+
+  <!-- Feedback Grid -->
+  <div class="relative grid lg:grid-cols-2 gap-6">
+    {% for f in feedback %}
+    <div class="group relative p-6 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-xl shadow-black/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 flex flex-col overflow-hidden">
+      
+      <!-- Card Header -->
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-3">
+          <div class="relative w-11 h-11 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px]">
+            <div class="w-full h-full rounded-full bg-ink-950 grid place-items-center text-brand-300 font-bold uppercase text-sm">
+              {{ f.full_name[0] }}
+            </div>
+          </div>
+          <div>
+            <p class="font-bold text-white">{{ f.full_name }}</p>
+            <p class="text-xs text-slate-400">{{ f.email }}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-0.5 text-base">
+          {% for i in range(5) %}
+            {% if i < f.rating %}<span class="text-amber-400">★</span>{% else %}<span class="text-slate-700">★</span>{% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Card Body -->
+      <div class="mt-5 flex-1 border-l-2 border-white/10 pl-4">
+        <p class="font-bold text-sm text-white">{{ f.subject or 'No subject' }}</p>
+        <p class="text-sm text-slate-400 mt-1.5 leading-relaxed">{{ f.message }}</p>
+      </div>
+
+      <!-- Card Footer -->
+      <div class="mt-6 pt-5 border-t border-white/5 flex items-center justify-between">
+        <span class="text-xs text-slate-500 font-medium">{{ f.created_at.strftime('%b %d, %Y') }}</span>
+        <form method="post" action="{{ url_for('admin.feedback_status', fid=f.feedback_id) }}" class="flex items-center gap-2">
+          <select name="status" class="text-xs px-3 py-2 rounded-full bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none capitalize font-medium text-slate-200 cursor-pointer">
+            <option value="open" {{ 'selected' if f.status == 'open' else '' }}>Open</option>
+            <option value="in_review" {{ 'selected' if f.status == 'in_review' else '' }}>In Review</option>
+            <option value="resolved" {{ 'selected' if f.status == 'resolved' else '' }}>Resolved</option>
+          </select>
+          <button type="submit" class="text-xs px-4 py-2 rounded-full bg-white text-ink-950 font-bold hover:scale-105 transition-transform shadow-md shadow-white/10">
+            Update
+          </button>
+        </form>
+      </div>
+    </div>
+    
+    {% else %}
+    <!-- Empty State -->
+    <div class="lg:col-span-2 relative p-16 text-center rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-xl flex flex-col items-center gap-4 text-slate-400">
+      <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 grid place-items-center">
+        <svg class="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 9v.906a2.25 2.25 0 01-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 001.183 1.981l6.478 3.488m8.839 2.51l-4.66-2.51m0 0l-1.023-.55a2.25 2.25 0 00-2.134 0l-1.022.55m0 0l-4.661 2.51m8.839 2.51l-8.839-2.51m8.839 2.51l1.183.658a2.25 2.25 0 001.023.236h.043a2.25 2.25 0 001.023-.236l1.183-.658m-8.839-2.51l-1.183-.658a2.25 2.25 0 00-1.023-.236h-.043a2.25 2.25 0 00-1.023.236l-1.183.658" /></svg>
+      </div>
+      <p class="font-medium">No feedback submitted yet.</p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

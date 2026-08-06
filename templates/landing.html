@@ -1,0 +1,422 @@
+{% extends "base.html" %}
+{% block title %}MediLink — AI Healthcare Assistant{% endblock %}
+
+{% block content %}
+<!-- Top nav -->
+<header class="sticky top-0 z-50 backdrop-blur-xl bg-ink-950/70 border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <img src="{{ url_for('static', filename='assets/Medilink.png') }}" alt="MediLink" class="w-9 h-9 rounded-xl object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+      <div style="display:none" class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 grid place-items-center text-white font-bold shadow-lg shadow-brand-500/30">M</div>
+      <div>
+        <p class="font-bold leading-none text-white tracking-tight">MediLink</p>
+        <p class="text-[11px] text-brand-400 font-medium">Healthcare Assistant</p>
+      </div>
+    </div>
+    
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+      <a href="#hero" class="hover:text-white transition-colors">Home</a>
+      <a href="#features" class="hover:text-white transition-colors">Services</a>
+      <a href="#how" class="hover:text-white transition-colors">About</a>
+      <a href="#specialists" class="hover:text-white transition-colors">Specialists</a>
+    </nav>
+    
+    <div class="flex items-center gap-3">
+      <a href="{{ url_for('auth.login') }}" class="hidden sm:inline-block px-4 py-2 text-sm font-medium rounded-full text-slate-300 hover:text-white hover:bg-white/5 transition">Sign in</a>
+      <a href="{{ url_for('auth.register') }}" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 transition-all shadow-lg shadow-white/10">Get in Touch</a>
+      
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="md:hidden w-9 h-9 grid place-items-center rounded-lg border border-white/10 hover:bg-white/5">
+        <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile Nav Panel -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-white/5 bg-ink-950/90 backdrop-blur-xl">
+    <div class="px-4 py-3 space-y-2">
+      <a href="#hero" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-white/5">Home</a>
+      <a href="#features" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-white/5">Services</a>
+      <a href="#how" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-white/5">About</a>
+      <a href="#specialists" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-200 hover:bg-white/5">Specialists</a>
+      <div class="pt-2 flex flex-col gap-2 border-t border-white/5 mt-2">
+        <a href="{{ url_for('auth.login') }}" class="block w-full text-center px-4 py-2 text-sm font-medium rounded-lg border border-white/10 text-slate-200">Sign in</a>
+        <a href="{{ url_for('auth.register') }}" class="block w-full text-center px-4 py-2 text-sm font-semibold rounded-lg bg-white text-ink-950">Get started</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero" class="relative overflow-hidden bg-ink-950 pt-24 pb-40">
+  <!-- Flagship Background Mesh -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[80rem] h-[40rem] bg-brand-500/15 rounded-full blur-[120px]"></div>
+    <div class="absolute top-40 right-0 w-[40rem] h-[40rem] bg-cyan-500/10 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-0 left-0 w-[40rem] h-[40rem] bg-indigo-500/10 rounded-full blur-[120px]"></div>
+  </div>
+  <!-- Grid pattern -->
+  <div class="absolute inset-0 opacity-[0.02]" style="background-image: linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px); background-size: 40px 40px; mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);"></div>
+  
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+      
+      <!-- Left Column: Content -->
+      <div class="flex flex-col items-start text-left">
+        <!-- Badge -->
+        <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-brand-300 text-sm font-semibold border border-white/10 backdrop-blur-sm shadow-lg">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+          </span>
+          Always Available
+        </span>
+        
+        <h1 class="mt-8 text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-[1.05] text-white text-balance">
+          Transforming the Future of <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-emerald-400 to-cyan-400">Healthcare</span> with MediLink
+        </h1>
+        
+        <p class="mt-6 text-lg text-slate-400 max-w-xl text-pretty leading-relaxed">
+          MediLink is an AI-powered healthcare platform designed to make healthcare smarter and more accessible. Analyze your symptoms, understand potential risks, receive personalized specialist recommendations, and connect with trusted doctors — all from one modern platform.
+        </p>
+        
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a href="{{ url_for('auth.register') }}" class="group relative inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-ink-950 font-semibold transition-all hover:scale-[1.02] shadow-2xl shadow-brand-500/20">
+            Register Now
+            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+          </a>
+          <a href="#how" class="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-white/5 border border-white/10 hover:border-white/20 text-white font-semibold transition-all backdrop-blur-sm">
+            <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+            How It Works
+          </a>
+        </div>
+        
+        <!-- Rating -->
+        <div class="mt-12 flex items-center gap-6">
+          <div class="flex -space-x-2">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-400 to-emerald-600 border-2 border-ink-950"></div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-600 border-2 border-ink-950"></div>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-400 to-purple-600 border-2 border-ink-950"></div>
+            <div class="w-10 h-10 rounded-full bg-slate-800 border-2 border-ink-950 grid place-items-center text-xs font-bold text-white">+</div>
+          </div>
+          <div>
+            <div class="flex items-center gap-1 text-amber-400">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+            </div>
+            <div>
+              <p class="font-bold text-white text-sm">4.9/5 Rating</p>
+              <p class="text-xs text-slate-400">From over 950 reviews</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Column: Illustration -->
+      <div class="relative hidden lg:block">
+        <!-- Main image card -->
+        <div class="relative rounded-[2rem] overflow-hidden shadow-2xl shadow-brand-900/40 border border-white/10 bg-gradient-to-br from-ink-900 to-ink-950 grid place-items-center p-8">
+          <img src="https://z-cdn-media.chatglm.cn/files/1d33aa97-cbbd-44f9-a89d-d1e3e88c1796.png?auth_key=1885682482-19fe02f160314ce4a97d3fc3bd0cf41b-0-e4eee3344a116f3a4f91b12dba0b6a49" alt="Online medical consultation illustration" class="w-full max-w-md mx-auto h-auto object-contain drop-shadow-2xl" onerror="this.style.display='none'" />
+          
+          <!-- Online doctor indicator -->
+          <div class="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/10 backdrop-blur-md shadow-lg">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <span class="text-xs font-semibold text-white">Doctor Online</span>
+          </div>
+        </div>
+        
+        <!-- Floating Emergency Card -->
+        <div class="absolute -bottom-8 -left-8 bg-ink-900/80 backdrop-blur-xl rounded-2xl shadow-2xl p-5 border border-white/10 max-w-[280px] hover:scale-105 transition-transform">
+          <div class="flex items-center gap-4">
+            <div class="relative w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 grid place-items-center shadow-lg shadow-red-500/30">
+              <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+            </div>
+            <div>
+              <p class="font-bold text-white text-sm">Emergency Help</p>
+              <p class="text-xs text-slate-400">24/7 Available For Help</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<section id="specialists" class="relative z-20 py-12 scroll-mt-20">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative rounded-3xl bg-ink-900/60 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/20 p-6 sm:p-8 overflow-hidden">
+      
+      <div class="absolute -top-24 -left-24 w-48 h-48 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Removed flex-wrap, forced single line layout -->
+      <div class="relative flex flex-nowrap justify-between items-center gap-2 sm:gap-4">
+        
+        <div class="group flex items-center gap-2 sm:gap-3 cursor-default flex-shrink-0">
+          <div class="relative w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px]">
+            <div class="w-full h-full rounded-[11px] bg-ink-950 grid place-items-center group-hover:scale-90 transition-transform duration-300">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+            </div>
+          </div>
+          <span class="font-semibold text-white text-[11px] sm:text-sm tracking-tight whitespace-nowrap">AI Analysis</span>
+        </div>
+
+        <div class="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-white/10 to-transparent flex-shrink-0"></div>
+
+        <div class="group flex items-center gap-2 sm:gap-3 cursor-default flex-shrink-0">
+          <div class="relative w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px]">
+            <div class="w-full h-full rounded-[11px] bg-ink-950 grid place-items-center group-hover:scale-90 transition-transform duration-300">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+            </div>
+          </div>
+          <span class="font-semibold text-white text-[11px] sm:text-sm tracking-tight whitespace-nowrap">Verified Doctors</span>
+        </div>
+
+        <div class="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-white/10 to-transparent flex-shrink-0"></div>
+
+        <div class="group flex items-center gap-2 sm:gap-3 cursor-default flex-shrink-0">
+          <div class="relative w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px]">
+            <div class="w-full h-full rounded-[11px] bg-ink-950 grid place-items-center group-hover:scale-90 transition-transform duration-300">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+            </div>
+          </div>
+          <span class="font-semibold text-white text-[11px] sm:text-sm tracking-tight whitespace-nowrap">Instant Results</span>
+        </div>
+
+        <div class="hidden sm:block w-px h-10 bg-gradient-to-b from-transparent via-white/10 to-transparent flex-shrink-0"></div>
+
+        <div class="group flex items-center gap-2 sm:gap-3 cursor-default flex-shrink-0">
+          <div class="relative w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px]">
+            <div class="w-full h-full rounded-[11px] bg-ink-950 grid place-items-center group-hover:scale-90 transition-transform duration-300">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+            </div>
+          </div>
+          <span class="font-semibold text-white text-[11px] sm:text-sm tracking-tight whitespace-nowrap">HIPAA-aware</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="py-24 bg-ink-950 scroll-mt-20 relative overflow-hidden">
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-brand-300 text-xs font-bold uppercase tracking-widest border border-white/10 backdrop-blur-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Our Services
+      </span>
+      <h2 class="mt-6 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tighter text-white text-balance">
+        Everything you need to manage <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-cyan-400">health</span>
+      </h2>
+      <p class="mt-4 text-slate-400 text-pretty">A complete platform for patients, doctors, and administrators.</p>
+    </div>
+    
+    <div class="mt-20 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% set features = [
+        ('symptom', 'Symptom Analysis', 'Describe your symptoms in natural language. Our engine processes them and suggests likely conditions.'),
+        ('risk', 'Risk Assessment', 'Every prediction includes a risk level: low, moderate, high, or critical — so you know what to do next.'),
+        ('specialist', 'Specialist Matching', 'Automatically get directed to the right specialist based on your symptoms.'),
+        ('appointment', 'Appointments', 'Book, track, and manage appointments with verified doctors.'),
+        ('chatbot', 'MediBot Assistant', 'A 24/7 chatbot trained on common healthcare intents.'),
+        ('history', 'History & Reports', 'Every prediction and appointment is stored securely for future reference.')
+      ] %}
+      {% for icon, title, desc in features %}
+      <div class="group relative p-8 rounded-3xl bg-ink-900/50 backdrop-blur-sm border border-white/5 hover:border-brand-500/30 hover:bg-ink-900/80 transition-all duration-500 h-full flex flex-col overflow-hidden">
+        
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+        
+        <div class="absolute -top-16 -right-16 w-40 h-40 bg-brand-500/10 rounded-full blur-3xl group-hover:bg-brand-500/20 transition-all duration-500 pointer-events-none"></div>
+        
+        <!-- Custom SVG Icon -->
+        <div class="relative z-10 w-14 h-14 rounded-2xl bg-white/5 border border-white/10 grid place-items-center mb-6 group-hover:scale-110 transition-transform duration-300">
+          {% if icon == 'symptom' %}
+          <svg class="w-7 h-7 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+          {% elif icon == 'risk' %}
+          <svg class="w-7 h-7 text-amber-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+          {% elif icon == 'specialist' %}
+          <svg class="w-7 h-7 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+          {% elif icon == 'appointment' %}
+          <svg class="w-7 h-7 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+          {% elif icon == 'chatbot' %}
+          <svg class="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+          {% elif icon == 'history' %}
+          <svg class="w-7 h-7 text-rose-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+          {% endif %}
+        </div>
+        
+        <h3 class="relative z-10 font-bold text-xl text-white tracking-tight">{{ title }}</h3>
+        <p class="relative z-10 mt-3 text-sm text-slate-400 flex-grow leading-relaxed">{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="py-24 bg-ink-950 scroll-mt-20 relative overflow-hidden border-t border-white/5">
+  <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto">
+      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 text-brand-300 text-xs font-bold uppercase tracking-widest border border-white/10 backdrop-blur-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> How it works
+      </span>
+      <h2 class="mt-6 text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tighter text-white text-balance">
+        From symptom to <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-cyan-400">specialist</span> in minutes
+      </h2>
+      <p class="mt-4 text-slate-400 text-pretty">A simple 4-step process powered by intelligent automation.</p>
+    </div>
+    
+    <div class="mt-20 grid sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+      {% set steps = [
+        ('1', 'Describe symptoms', 'Input what you are feeling in plain English.'),
+        ('2', 'Get instant analysis', 'Our AI processes your symptoms instantly.'),
+        ('3', 'See risk & specialist', 'Know your risk level and the right doctor.'),
+        ('4', 'Book appointment', 'Schedule your visit with one click.')
+      ] %}
+      {% for n, label, desc in steps %}
+      <div class="group relative p-8 rounded-3xl bg-ink-900/50 backdrop-blur-sm border border-white/5 hover:border-brand-500/30 transition-all duration-500 h-full flex flex-col overflow-hidden">
+        
+        <span class="absolute -top-4 -right-2 text-[7rem] font-extrabold text-white/[0.02] select-none transition-colors duration-500 leading-none">{{ n }}</span>
+        
+        <div class="relative z-10 w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500/20 to-cyan-500/20 border border-white/10 grid place-items-center mb-6 shadow-lg">
+          {% if n == '1' %}
+          <svg class="w-7 h-7 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+          {% elif n == '2' %}
+          <svg class="w-7 h-7 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+          {% elif n == '3' %}
+          <svg class="w-7 h-7 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          {% elif n == '4' %}
+          <svg class="w-7 h-7 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+          {% endif %}
+        </div>
+        
+        <p class="relative z-10 text-lg font-bold text-white tracking-tight">{{ label }}</p>
+        <p class="relative z-10 mt-2 text-sm text-slate-400 leading-relaxed">{{ desc }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-24 bg-ink-950 relative overflow-hidden">
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+  
+  <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="relative rounded-[2.5rem] bg-gradient-to-br from-ink-900 to-ink-950 p-8 sm:p-12 lg:p-16 overflow-hidden shadow-2xl border border-white/10">
+      
+      <div class="absolute -top-24 -right-24 w-80 h-80 bg-brand-500/30 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(to right, white 1px, transparent 1px), linear-gradient(to bottom, white 1px, transparent 1px); background-size: 32px 32px;"></div>
+      
+      <div class="relative grid md:grid-cols-5 gap-12 items-center">
+        
+        <div class="md:col-span-3 text-center md:text-left">
+          <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 text-brand-300 text-xs font-bold uppercase tracking-widest border border-brand-500/20 backdrop-blur-sm">
+            <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Get Started Today
+          </span>
+          
+          <h2 class="mt-6 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tighter text-balance leading-[1.1]">
+            Take charge of your <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-cyan-400">health</span> today.
+          </h2>
+          
+          <p class="mt-5 text-slate-400 max-w-xl mx-auto md:mx-0 text-pretty leading-relaxed">
+            Join MediLink and experience healthcare that's intelligent, accessible, and secure. Your journey to better health starts here.
+          </p>
+          
+          <div class="mt-10 flex flex-wrap gap-4 justify-center md:justify-start">
+            <a href="{{ url_for('auth.register') }}" class="group inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white text-ink-950 font-semibold transition-all hover:shadow-xl hover:shadow-white/10 hover:scale-[1.02]">
+              Create your account
+              <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-semibold hover:bg-white/10 transition-all backdrop-blur-sm">
+              Sign in
+            </a>
+          </div>
+        </div>
+        
+        <div class="hidden md:block md:col-span-2 relative h-64">
+          <div class="absolute top-0 right-8 w-52 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl transform rotate-3 hover:rotate-0 transition-all duration-500 hover:scale-105">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-brand-500/20 grid place-items-center shadow-inner">
+                <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">AI Analysis</p>
+                <p class="text-slate-400 text-xs">Instant results</p>
+              </div>
+            </div>
+            <div class="mt-3 h-1.5 w-full bg-slate-700/50 rounded-full overflow-hidden">
+              <div class="h-full w-4/5 bg-gradient-to-r from-brand-400 to-cyan-400 rounded-full"></div>
+            </div>
+          </div>
+
+          <div class="absolute top-24 right-36 w-44 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl transform -rotate-6 hover:rotate-0 transition-all duration-500 hover:scale-105">
+            <div class="flex items-center gap-3">
+              <div class="relative w-10 h-10 rounded-full bg-green-500/20 grid place-items-center">
+                <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+                <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-ink-900 animate-pulse"></span>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Dr. Online</p>
+                <p class="text-slate-400 text-xs">Available 24/7</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="absolute bottom-0 right-4 w-48 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl transform rotate-6 hover:rotate-0 transition-all duration-500 hover:scale-105">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-500/20 grid place-items-center">
+                <svg class="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+              </div>
+              <div>
+                <p class="text-white text-sm font-semibold">Encrypted</p>
+                <p class="text-slate-400 text-xs">HIPAA-aware</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-white/5 py-12 bg-ink-950">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <p class="text-sm text-slate-500">© 2026 MediLink. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Mobile Menu Script -->
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+  }
+</script>
+{% endblock %}

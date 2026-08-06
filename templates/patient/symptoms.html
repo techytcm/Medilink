@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Symptom Analysis — MediLink{% endblock %}
+
+{% block content %}
+<div class="relative overflow-hidden bg-ink-950 min-h-screen">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <!-- Dotted grid pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <div class="relative p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto space-y-6">
+    
+    <!-- Header -->
+    <div class="flex items-center gap-4 pt-2">
+      <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 shadow-sm grid place-items-center">
+        <svg class="w-6 h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v5.25M3.75 21v-5.25M3.75 8.25h4.5M3.75 15.75h4.5M21 3v5.25M21 21v-5.25M21 8.25h-4.5M21 15.75h-4.5M3 12h18" /></svg>
+      </div>
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Symptom Analysis</h1>
+        <p class="text-sm text-slate-400 mt-0.5">Describe what you're feeling in your own words. Our engine will analyze and suggest next steps.</p>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <form method="post" class="p-8 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-2xl shadow-black/20 space-y-6">
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Your symptoms</label>
+        <textarea name="symptoms" rows="6" required
+                  placeholder="e.g. I've had a fever and dry cough for 2 days, with body aches and fatigue..."
+                  class="w-full px-4 py-3 rounded-xl bg-ink-950 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500 resize-none">{{ input or '' }}</textarea>
+        <p class="mt-2 text-xs text-slate-500 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+          Tip: include duration, severity, and any related feelings for better accuracy.
+        </p>
+      </div>
+
+      <!-- Quick chips -->
+      <div>
+        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">Quick add</p>
+        <div class="flex flex-wrap gap-2" id="chips">
+          {% for s in ['fever','cough','headache','fatigue','sore throat','nausea','dizziness','shortness of breath'] %}
+          <button type="button" onclick="addChip('{{ s }}')"
+                  class="px-4 py-2 text-xs font-semibold rounded-full bg-ink-950 text-slate-300 border border-white/10 hover:bg-brand-500/10 hover:text-brand-300 hover:border-brand-500/30 transition-all hover:scale-105 shadow-sm">{{ s }}</button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-white/5">
+        <p class="text-xs text-slate-500 font-medium flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+          Your data is private and stored securely.
+        </p>
+        <button type="submit" class="w-full sm:w-auto px-6 py-3.5 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold shadow-lg shadow-white/10 transition-all hover:scale-[1.01] flex items-center justify-center gap-2">
+          Analyze symptoms
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+        </button>
+      </div>
+    </form>
+
+    <!-- Disclaimer -->
+    <div class="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 backdrop-blur-sm flex items-start gap-3 shadow-sm">
+      <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+      <span class="font-medium"><strong>Disclaimer:</strong> MediLink provides AI-assisted preliminary analysis only. It is not a substitute for professional medical diagnosis.</span>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function addChip(symptom){
+  const ta = document.querySelector('textarea[name="symptoms"]');
+  ta.value = ta.value ? ta.value.trim() + ', ' + symptom : symptom;
+  ta.focus();
+}
+</script>
+{% endblock %}

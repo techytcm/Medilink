@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en" class="h-full dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}MediLink — Healthcare Assistant{% endblock %}</title>
+  <meta name="description" content="MediLink: AI-inspired healthcare assistant for symptom analysis, risk assessment, and appointment booking." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+          colors: {
+            brand: {
+              50:'#f0fdf4', 100:'#dcfce7', 200:'#bbf7d0', 300:'#86efac',
+              400:'#4ade80', 500:'#22c55e', 600:'#16a34a', 700:'#15803d',
+              800:'#166534', 900:'#14532d', 950:'#052e16'
+            },
+            ink: { 950:'#0b1220', 900:'#0f172a', 800:'#1e293b' }
+          },
+          boxShadow: {
+            soft: '0 4px 20px -2px rgba(15, 23, 42, 0.08)',
+            card: '0 8px 30px -8px rgba(15, 23, 42, 0.12)'
+          },
+          borderRadius: { '2xl':'1.25rem','3xl':'1.75rem' }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  
+  <!-- Prevent preloader flash on subsequent page loads -->
+  <script>
+    if (sessionStorage.getItem('medilink_loaded')) {
+      document.documentElement.classList.add('skip-preloader');
+    }
+  </script>
+</head>
+<body class="h-full bg-ink-950 text-slate-100 font-sans antialiased ambient-bg">
+  
+  <!-- Premium Preloader -->
+  <div id="preloader" class="preloader-overlay">
+    <div class="loader-container">
+      <div class="dot dot-1"></div>
+      <div class="dot dot-2"></div>
+      <div class="dot dot-3"></div>
+    </div>
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" style="position: absolute; width: 0; height: 0;">
+      <defs>
+        <filter id="goo">
+          <feGaussianBlur result="blur" stdDeviation="10" in="SourceGraphic"></feGaussianBlur>
+          <feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 21 -7" mode="matrix" in="blur"></feColorMatrix>
+        </filter>
+      </defs>
+    </svg>
+  </div>
+
+  {% macro sidebar_link(endpoint, label, icon) %}
+    <a href="{{ url_for(endpoint) }}" 
+       class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 
+              {% if request.endpoint == endpoint %}bg-brand-500/10 text-brand-300 font-bold border border-brand-500/20 shadow-sm{% else %}text-slate-400 hover:text-white hover:bg-white/5 border border-transparent{% endif %}">
+      <span class="w-5 h-5 flex-shrink-0">
+        {% if icon == 'home' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.5a2.25 2.25 0 002.25 2.25h11.25a2.25 2.25 0 002.25-2.25V9.75M8.25 21h8.25" /></svg>
+        {% elif icon == 'activity' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v5.25M3.75 21v-5.25M3.75 8.25h4.5M3.75 15.75h4.5M21 3v5.25M21 21v-5.25M21 8.25h-4.5M21 15.75h-4.5M3 12h18" /></svg>
+        {% elif icon == 'clock' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        {% elif icon == 'calendar' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+        {% elif icon == 'message' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+        {% elif icon == 'bell' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" /></svg>
+        {% elif icon == 'star' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+        {% elif icon == 'user' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+        {% elif icon == 'cog' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+        {% elif icon == 'users' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" /></svg>
+        {% elif icon == 'stethoscope' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
+        {% elif icon == 'chart' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+        {% elif icon == 'shield' %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+        {% else %}
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" /></svg>
+        {% endif %}
+      </span>
+      {{ label }}
+    </a>
+  {% endmacro %}
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div id="flash-container" class="fixed top-6 right-6 z-[100] w-[92%] max-w-sm space-y-3">
+        {% for category, msg in messages %}
+          <div class="flash-msg flex items-start gap-3 px-5 py-4 rounded-2xl shadow-2xl backdrop-blur-xl border text-sm font-medium transition-all duration-300 transform translate-x-0
+            {% if category=='success' %}bg-brand-500/10 border-brand-500/20 text-brand-300
+            {% elif category=='danger' %}bg-red-500/10 border-red-500/20 text-red-300
+            {% elif category=='warning' %}bg-amber-500/10 border-amber-500/20 text-amber-300
+            {% else %}bg-sky-500/10 border-sky-500/20 text-sky-300{% endif %}"
+            role="alert">
+            <span class="mt-0.5 flex-shrink-0">
+              {% if category=='success' %}
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              {% elif category=='danger' %}
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+              {% elif category=='warning' %}
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+              {% else %}
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
+              {% endif %}
+            </span>
+            <span class="flex-1">{{ msg | safe }}</span>
+            <button class="opacity-60 hover:opacity-100 transition-opacity flex-shrink-0" onclick="this.parentElement.remove()">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block body %}
+    {% if current_user %}
+      <aside id="sidebar"
+        class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full lg:translate-x-0 transition-transform duration-300
+               bg-ink-900/50 backdrop-blur-xl border-r border-white/5 flex flex-col">
+        
+        <div class="h-16 flex items-center gap-2.5 px-5 border-b border-white/5">
+          <img src="{{ url_for('static', filename='assets/Medilink.png') }}" alt="MediLink" class="w-9 h-9 rounded-xl object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'" />
+          <div style="display:none" class="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 grid place-items-center text-white font-bold shadow-lg shadow-brand-500/30">M</div>
+          <div>
+            <p class="font-bold leading-none text-white tracking-tight">MediLink</p>
+            <p class="text-[11px] text-brand-400 font-medium">Healthcare Assistant</p>
+          </div>
+        </div>
+
+        <nav class="flex-1 overflow-y-auto px-4 py-6 space-y-1.5 text-sm font-medium">
+          {% set role = current_user.role %}
+          {% if role == 'patient' %}
+            {{ sidebar_link('patient.dashboard',     'Dashboard',     'home') }}
+            {{ sidebar_link('patient.symptoms',      'Symptom Check', 'activity') }}
+            {{ sidebar_link('patient.prediction_history','History',   'clock') }}
+            {{ sidebar_link('patient.appointments',  'Appointments',  'calendar') }}
+            {{ sidebar_link('patient.chatbot',       'MediBot Chat',  'message') }}
+            {{ sidebar_link('patient.notifications', 'Notifications', 'bell') }}
+            {{ sidebar_link('patient.feedback',      'Feedback',      'star') }}
+            {{ sidebar_link('patient.profile',       'Profile',       'user') }}
+            {{ sidebar_link('patient.settings',      'Settings',      'cog') }}
+          {% elif role == 'doctor' %}
+            {{ sidebar_link('doctor.dashboard',     'Dashboard',     'home') }}
+            {{ sidebar_link('doctor.appointments',  'Appointments',  'calendar') }}
+          {% elif role == 'admin' %}
+            {{ sidebar_link('admin.dashboard',  'Dashboard',     'home') }}
+            {{ sidebar_link('admin.users',       'Users',         'users') }}
+            {{ sidebar_link('admin.doctors',     'Doctors',       'stethoscope') }}
+            {{ sidebar_link('admin.reports',     'Reports',       'chart') }}
+            {{ sidebar_link('admin.feedback',    'Feedback',      'star') }}
+            {{ sidebar_link('admin.audit_logs',  'Audit Logs',    'shield') }}
+          {% endif %}
+        </nav>
+
+        <div class="p-4 border-t border-white/5">
+          <div class="flex items-center gap-3 mb-4 p-2 rounded-xl bg-white/5 border border-white/10">
+            <div class="relative w-9 h-9 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px] flex-shrink-0">
+              <div class="w-full h-full rounded-full bg-ink-950 grid place-items-center text-brand-300 font-bold uppercase text-sm">
+                {{ current_user.full_name[0] }}
+              </div>
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white truncate">{{ current_user.full_name }}</p>
+              <p class="text-[11px] text-slate-400 truncate">{{ current_user.email }}</p>
+            </div>
+          </div>
+          <a href="{{ url_for('auth.logout') }}"
+             class="block w-full text-center text-xs font-bold px-4 py-2.5 rounded-full
+                    bg-white text-ink-950 hover:scale-[1.01] transition-transform shadow-sm">
+            Sign out
+          </a>
+        </div>
+      </aside>
+      
+      <div id="sidebar-overlay" class="fixed inset-0 bg-ink-950/80 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+    {% endif %}
+
+    <main class="{% if current_user %}lg:pl-64{% endif %} min-h-screen">
+      {% block content %}{% endblock %}
+    </main>
+  {% endblock %}
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

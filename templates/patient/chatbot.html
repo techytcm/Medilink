@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}MediBot — MediLink{% endblock %}
+
+{% block content %}
+<div class="relative overflow-hidden bg-ink-950 min-h-[calc(100vh-4rem)]">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <!-- Dotted grid pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <div class="relative p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto h-[calc(100vh-4rem)] flex flex-col">
+    
+    <!-- Header -->
+    <div class="mb-6 flex items-center gap-4">
+      <div class="relative w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px] shadow-lg shadow-brand-500/20">
+        <div class="w-full h-full rounded-2xl bg-ink-950 grid place-items-center">
+          <svg class="w-6 h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" /></svg>
+        </div>
+      </div>
+      <div>
+        <h1 class="font-bold text-xl text-white tracking-tight">MediBot</h1>
+        <p class="text-xs text-slate-400 flex items-center gap-1.5 font-medium">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+          </span>
+          Online — here to help 24/7
+        </p>
+      </div>
+    </div>
+
+    <!-- Chat Box -->
+    <div id="chat-box" class="relative flex-1 overflow-y-auto p-6 space-y-5 bg-ink-900/50 backdrop-blur-xl rounded-3xl border border-white/5 shadow-2xl shadow-black/20 scroll-smooth">
+      {% if history %}
+        {% for m in history %}
+        <div class="flex {{ 'justify-end' if m.sender == 'user' else 'justify-start' }}">
+          <div class="max-w-[75%] px-5 py-3 rounded-2xl text-sm shadow-md
+            {% if m.sender == 'user' %}
+              bg-gradient-to-br from-brand-500 to-brand-700 text-white rounded-br-md font-medium
+            {% else %}
+              bg-white/5 text-slate-200 rounded-bl-md border border-white/10
+            {% endif %}">
+            {{ m.message }}
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="flex justify-start">
+          <div class="max-w-[75%] px-5 py-3 rounded-2xl rounded-bl-md bg-white/5 text-slate-200 text-sm border border-white/10 shadow-sm flex items-center gap-2">
+            <svg class="w-4 h-4 text-brand-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+            <span>Hi! I'm MediBot. Tell me your symptoms or ask about appointments, diet, blood pressure, etc.</span>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Form -->
+    <form id="chat-form" class="relative mt-6 flex items-center gap-2 p-2 rounded-2xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-2xl shadow-black/20">
+      <input id="chat-input" type="text" placeholder="Type your message…" autocomplete="off"
+             class="flex-1 px-5 py-3 bg-transparent outline-none text-white placeholder-slate-500 font-medium" />
+      <button type="submit" class="px-6 py-3 rounded-xl bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold transition-all hover:scale-105 shadow-lg shadow-white/10 flex items-center gap-2">
+        Send
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
+      </button>
+    </form>
+    
+    <p class="relative mt-3 text-center text-xs text-slate-500 font-medium">
+      MediBot is for informational purposes only and not a medical diagnosis.
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+{% endblock %}

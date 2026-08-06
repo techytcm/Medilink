@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Sign in — MediLink{% endblock %}
+
+{% block content %}
+<div class="min-h-screen grid lg:grid-cols-2 relative bg-ink-950">
+  
+  <!-- Left visual panel -->
+  <div class="hidden lg:flex flex-col justify-between p-12 text-white relative overflow-hidden">
+    <!-- Ambient background glows -->
+    <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/20 rounded-full blur-[120px] pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+    <!-- Dotted grid pattern -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+    <!-- Top text instead of logo -->
+    <div class="relative z-10">
+      <p class="text-sm font-bold uppercase tracking-widest text-brand-400">MediLink Assistant</p>
+    </div>
+
+    <div class="relative z-10">
+      <h2 class="text-4xl lg:text-5xl font-extrabold leading-tight text-balance tracking-tighter">Welcome back to <span class="italic font-light text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-cyan-400">intelligent</span> healthcare.</h2>
+      <p class="mt-4 text-slate-400 max-w-md text-pretty leading-relaxed">Sign in to access your dashboard, predictions, appointments, and MediBot assistant.</p>
+      
+      <div class="mt-10 grid grid-cols-3 gap-4 max-w-md">
+        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+          <p class="text-2xl font-bold text-white">10k+</p>
+          <p class="text-xs text-slate-400 mt-1">Patients</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+          <p class="text-2xl font-bold text-white">500+</p>
+          <p class="text-xs text-slate-400 mt-1">Doctors</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm">
+          <p class="text-2xl font-bold text-white">24/7</p>
+          <p class="text-xs text-slate-400 mt-1">Support</p>
+        </div>
+      </div>
+    </div>
+    
+    <p class="text-xs text-slate-500 relative z-10">© 2026 MediLink. All rights reserved.</p>
+  </div>
+
+  <!-- Right form panel -->
+  <div class="flex items-center justify-center p-6 sm:p-12 relative overflow-hidden">
+    <!-- Subtle decorative glow -->
+    <div class="absolute top-1/2 -translate-y-1/2 right-0 w-72 h-72 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+    <div class="relative w-full max-w-md">
+      <!-- Status badge -->
+      <div class="mb-10">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 text-brand-300 text-xs font-bold uppercase tracking-widest border border-brand-500/20 backdrop-blur-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> Secure Login
+        </span>
+      </div>
+
+      <h1 class="text-3xl font-extrabold text-white tracking-tight">Sign in to your account</h1>
+      <p class="mt-2 text-sm text-slate-400">Enter your credentials to continue.</p>
+
+      <form method="post" class="mt-8 space-y-6">
+        <div>
+          <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Email address</label>
+          <input name="email" type="email" required autofocus
+                 value="{{ form.email if form else '' }}"
+                 class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500" placeholder="you@example.com" />
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider">Password</label>
+            <a href="{{ url_for('auth.reset_request') }}" class="text-xs text-brand-400 font-semibold hover:text-brand-300 transition-colors">Forgot password?</a>
+          </div>
+          <div class="relative">
+            <input name="password" type="password" id="password" required
+                   class="w-full px-4 py-3 pr-11 rounded-xl bg-white/5 border border-white/10 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 outline-none transition-all text-white placeholder-slate-500" placeholder="••••••••" />
+            <button type="button" onclick="togglePw('password')" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-brand-400 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            </button>
+          </div>
+        </div>
+        <label class="flex items-center gap-2 text-sm text-slate-400 cursor-pointer">
+          <input type="checkbox" name="remember" class="w-4 h-4 rounded border-white/20 bg-white/5 text-brand-500 focus:ring-brand-500/20 transition" />
+          Keep me signed in
+        </label>
+        <button type="submit" class="w-full py-3.5 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold shadow-lg shadow-white/10 transition-all hover:scale-[1.01] flex items-center justify-center gap-2">
+          Sign in
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+        </button>
+      </form>
+
+      <div class="mt-8 text-sm text-center text-slate-400">
+        Don't have an account?
+        <a href="{{ url_for('auth.register') }}" class="text-brand-400 font-semibold hover:underline">Create one</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function togglePw(id){
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+}
+</script>
+{% endblock %}

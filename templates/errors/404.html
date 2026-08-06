@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ code or 404 }} — Not found{% endblock %}
+
+{% block content %}
+<div class="min-h-screen grid place-items-center p-6 relative overflow-hidden bg-ink-950">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 left-1/4 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <!-- Dotted grid pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <div class="relative w-full max-w-lg text-center">
+    <!-- Glass Card -->
+    <div class="relative p-10 sm:p-12 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-2xl shadow-black/20 flex flex-col items-center overflow-hidden">
+      
+      <!-- Decorative glow -->
+      <div class="absolute -top-24 -right-24 w-48 h-48 bg-brand-500/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <!-- Status Badge -->
+      <span class="relative inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-500/10 text-red-300 text-xs font-bold uppercase tracking-widest border border-red-500/20 backdrop-blur-sm mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span> Error Encountered
+      </span>
+
+      <!-- Massive Error Code -->
+      <p class="relative text-8xl sm:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-brand-400 to-cyan-400 leading-none">
+        {{ code or 404 }}
+      </p>
+
+      <!-- Message -->
+      <h1 class="relative mt-6 text-2xl sm:text-3xl font-extrabold text-white tracking-tight text-balance">
+        {{ message or 'Page not found' }}
+      </h1>
+      <p class="relative mt-3 text-slate-400 text-pretty max-w-sm mx-auto">
+        The page you're looking for doesn't exist, has been moved, or is temporarily unavailable.
+      </p>
+
+      <!-- Action Button -->
+      <a href="{{ url_for('landing') }}" class="relative mt-8 inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold hover:scale-[1.02] transition-transform shadow-lg shadow-white/10 w-full sm:w-auto justify-center">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
+        Back to safety
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% block title %}Prediction Results — MediLink{% endblock %}
+
+{% block content %}
+<div class="relative overflow-hidden bg-ink-950 min-h-screen">
+  <!-- Ambient background blobs -->
+  <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <!-- Dotted grid pattern -->
+  <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(currentColor 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+  <div class="relative p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto space-y-8">
+    
+    {% if mode == 'history' %}
+      <!-- History Mode -->
+      <div class="flex items-center gap-4 pt-2">
+        <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 shadow-sm grid place-items-center">
+          <svg class="w-6 h-6 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        </div>
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Prediction History</h1>
+          <p class="text-sm text-slate-400 mt-0.5">Review your past symptom checks and risk assessments.</p>
+        </div>
+      </div>
+
+      {% if history %}
+      <div class="space-y-4">
+        {% for p in history %}
+        <div class="group relative p-6 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-lg shadow-black/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 flex flex-wrap items-center gap-4 overflow-hidden">
+          
+          <div class="absolute -top-12 -right-12 w-40 h-40 bg-brand-500/10 rounded-full blur-2xl group-hover:bg-brand-500/20 transition-all duration-500 pointer-events-none"></div>
+          
+          <div class="relative flex-1 min-w-[200px]">
+            <p class="font-bold text-lg text-white">{{ p.predicted_disease or 'Unrecognized' }}</p>
+            <p class="text-xs text-slate-400 mt-1 line-clamp-2">Symptoms: {{ p.symptoms_input[:100] }}…</p>
+            <p class="text-xs text-slate-500 mt-2 font-mono">{{ p.created_at.strftime('%b %d, %Y · %H:%M') }}</p>
+          </div>
+          
+          <div class="relative flex items-center gap-3 ml-auto">
+            <span class="text-xs font-bold px-3 py-1.5 rounded-full capitalize border
+              {% if p.risk_level=='critical' %}bg-red-500/10 text-red-300 border-red-500/20
+              {% elif p.risk_level=='high' %}bg-orange-500/10 text-orange-300 border-orange-500/20
+              {% elif p.risk_level=='moderate' %}bg-amber-500/10 text-amber-300 border-amber-500/20
+              {% else %}bg-brand-500/10 text-brand-300 border-brand-500/20{% endif %}">
+              {{ p.risk_level|capitalize }}
+            </span>
+            <a href="{{ url_for('patient.appointments') }}" class="text-xs font-bold px-4 py-2 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 transition-transform shadow-sm">
+              Book consult
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="py-16 text-center rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-xl flex flex-col items-center gap-4 text-slate-400">
+        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 grid place-items-center">
+          <svg class="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+        </div>
+        <p class="font-medium">No predictions yet.</p>
+      </div>
+      {% endif %}
+
+    {% else %}
+      <!-- Single Result Mode -->
+      <div class="pt-2">
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Your Analysis Result</h1>
+        <p class="text-sm text-slate-400 mt-1">Review the assessment below and take the recommended next step.</p>
+      </div>
+
+      {% if result.top %}
+      <!-- Risk banner -->
+      <div class="relative p-8 rounded-3xl backdrop-blur-xl border shadow-2xl overflow-hidden
+        {% if result.top.risk_level == 'critical' %}bg-red-500/10 border-red-500/20 shadow-red-500/10
+        {% elif result.top.risk_level == 'high' %}bg-orange-500/10 border-orange-500/20 shadow-orange-500/10
+        {% elif result.top.risk_level == 'moderate' %}bg-amber-500/10 border-amber-500/20 shadow-amber-500/10
+        {% else %}bg-brand-500/10 border-brand-500/20 shadow-brand-500/10{% endif %}">
+        
+        <!-- Decorative blur -->
+        <div class="absolute -top-16 -right-16 w-48 h-48 rounded-full blur-3xl pointer-events-none
+          {% if result.top.risk_level == 'critical' %}bg-red-500/20
+          {% elif result.top.risk_level == 'high' %}bg-orange-500/20
+          {% elif result.top.risk_level == 'moderate' %}bg-amber-500/20
+          {% else %}bg-brand-500/20{% endif %}"></div>
+
+        <div class="relative flex flex-col sm:flex-row sm:items-center gap-6">
+          <div class="text-5xl flex-shrink-0">
+            {% if result.top.risk_level == 'critical' %}
+            <svg class="w-12 h-12 text-red-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+            {% elif result.top.risk_level == 'high' %}
+            <svg class="w-12 h-12 text-orange-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+            {% elif result.top.risk_level == 'moderate' %}
+            <svg class="w-12 h-12 text-amber-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+            {% else %}
+            <svg class="w-12 h-12 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            {% endif %}
+          </div>
+          <div class="flex-1">
+            <p class="text-xs uppercase tracking-widest font-bold opacity-70">Risk level</p>
+            <p class="text-4xl font-extrabold capitalize tracking-tight text-white mt-1">{{ result.top.risk_level }}</p>
+            <p class="mt-3 text-sm font-medium text-slate-200">Most likely condition: <strong class="text-white">{{ result.top.disease }}</strong> ({{ result.top.confidence }}% confidence)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Info Grid -->
+      <div class="grid lg:grid-cols-2 gap-6">
+        <!-- Recommendations -->
+        <div class="p-8 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-2xl shadow-black/20">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 grid place-items-center">
+              <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" /></svg>
+            </span>
+            <h3 class="font-bold text-lg text-white tracking-tight">Recommendations</h3>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">{{ result.top.recommendations }}</p>
+          <div class="mt-6 pt-5 border-t border-white/5">
+            <p class="text-xs uppercase tracking-widest font-bold text-slate-500">Recommended specialist</p>
+            <p class="text-xl font-extrabold text-brand-400 mt-1.5 tracking-tight">{{ result.top.specialist }}</p>
+          </div>
+        </div>
+
+        <!-- Matched Symptoms -->
+        <div class="p-8 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-2xl shadow-black/20 flex flex-col">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 grid place-items-center">
+              <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+            </span>
+            <h3 class="font-bold text-lg text-white tracking-tight">Matched symptoms</h3>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-6">
+            {% for s in result.processed_symptoms %}
+            <span class="px-3 py-1.5 text-xs font-semibold rounded-full bg-brand-500/10 text-brand-300 border border-brand-500/20">{{ s }}</span>
+            {% endfor %}
+          </div>
+          <a href="{{ url_for('patient.appointments') }}" class="mt-auto w-full text-center px-5 py-3.5 rounded-full bg-white text-ink-950 hover:bg-brand-400 hover:text-ink-950 font-bold transition-transform hover:scale-[1.01] shadow-lg shadow-white/10 flex items-center justify-center gap-2">
+            Book appointment with specialist
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+          </a>
+        </div>
+      </div>
+
+      {% if result.predictions|length > 1 %}
+      <!-- Other possible conditions -->
+      <div class="p-8 rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-2xl shadow-black/20">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 grid place-items-center">
+            <svg class="w-5 h-5 text-brand-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" /></svg>
+          </span>
+          <h3 class="font-bold text-lg text-white tracking-tight">Other possible conditions</h3>
+        </div>
+        <div class="space-y-4">
+          {% for p in result.predictions[1:] %}
+          <div class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
+            <div class="flex-1 min-w-0">
+              <p class="font-bold text-white text-sm">{{ p.disease }}</p>
+              <p class="text-xs text-slate-400 mt-0.5">Specialist: {{ p.specialist }}</p>
+            </div>
+            <div class="w-32 h-2.5 bg-white/5 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-brand-400 to-brand-600 rounded-full transition-all duration-700" style="width: {{ p.confidence }}%"></div>
+            </div>
+            <span class="text-xs font-bold text-white w-12 text-right">{{ p.confidence }}%</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% else %}
+      <!-- No Match State -->
+      <div class="py-16 text-center rounded-3xl bg-ink-900/50 backdrop-blur-xl border border-white/5 shadow-xl flex flex-col items-center gap-4 text-slate-400">
+        <div class="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 grid place-items-center">
+          <svg class="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" /></svg>
+        </div>
+        <p class="font-bold text-white text-lg">We couldn't identify a clear match.</p>
+        <p class="text-sm text-slate-400">Try adding more specific symptoms for a better analysis.</p>
+        <a href="{{ url_for('patient.symptoms') }}" class="mt-2 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-ink-950 text-sm font-bold hover:bg-brand-400 hover:text-ink-950 transition-transform shadow-lg shadow-white/10">
+          Try again
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" /></svg>
+        </a>
+      </div>
+      {% endif %}
+
+      <!-- Disclaimer -->
+      <div class="p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 backdrop-blur-sm flex items-start gap-3 shadow-sm">
+        <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" /></svg>
+        <span class="font-medium">{{ result.disclaimer }}</span>
+      </div>
+
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

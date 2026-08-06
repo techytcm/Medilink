@@ -1,0 +1,88 @@
+nohup: ignoring input
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.199:5000
+[33mPress CTRL+C to quit[0m
+192.168.0.199 - - [02/Aug/2026 19:49:56] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:49:56] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:49:56] "GET /static/assets/hero-illustration.png HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:49:56] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:49:56] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+127.0.0.1 - - [02/Aug/2026 19:50:02] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [02/Aug/2026 19:50:12] "HEAD /static/assets/hero-illustration.png HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:17] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:18] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:50:18] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:18] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:18] "[36mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:18] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:19] "GET /register HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:50:19] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:50:19] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:23] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:51:23] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:23] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:23] "[36mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:23] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "[36mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "[36mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:28] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:51:28] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:28] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:28] "[36mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:51:28] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:08] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:53:08] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:08] "[33mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 404 -
+192.168.0.199 - - [02/Aug/2026 19:53:08] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:10] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:53:10] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:10] "[33mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 404 -
+192.168.0.199 - - [02/Aug/2026 19:53:10] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:10] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:39] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:53:39] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:39] "[33mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 404 -
+192.168.0.199 - - [02/Aug/2026 19:53:39] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:39] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:59] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:53:59] "[33mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 404 -
+192.168.0.199 - - [02/Aug/2026 19:53:59] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:59] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:53:59] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "[33mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 404 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "GET / HTTP/1.1" 200 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "[36mGET /static/assets/Medilink.png HTTP/1.1[0m" 304 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "[33mGET /static/assets/hero-illustration.png HTTP/1.1[0m" 404 -
+192.168.0.199 - - [02/Aug/2026 19:54:35] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
